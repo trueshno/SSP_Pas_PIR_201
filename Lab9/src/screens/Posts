@@ -1,0 +1,146 @@
+import React from "react";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import Icon from "@expo/vector-icons/Entypo";
+import { TouchableOpacity } from "react-native";
+
+const { width } = Dimensions.get("window");
+
+export default class Posts extends React.Component {
+  state = {
+    liked: false,
+  };
+
+  onLike = () => {
+    this.setState({ liked: !this.state.liked });
+  };
+
+  render() {
+    const { name, profile, photo, onPress, post } = this.props;
+
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingTop: 25,
+            alignItems: "center",
+          }}
+        >
+          <View style={{ width: "20%" }}>
+            <Image
+              source={profile}
+              style={{
+                width: 45,
+                height: 45,
+                borderRadius: 13,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              width: "60%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                color: "#044244",
+              }}
+            >
+              {name}
+            </Text>
+
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#9ca1a2",
+              }}
+            >
+              2 мин. назад
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "20%",
+              alignItems: "flex-end",
+            }}
+          >
+            <Icon name="sound-mix" color="#044244" size={20} />
+          </View>
+        </View>
+
+        <View style={styles.postContainer}>
+          {post ? (
+            <View style={styles.postContent}>
+              <Text style={styles.postText}>{post}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={onPress}
+                  style={styles.actionButton}
+                >
+                  <Icon name="forward" color="#044244" size={20} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={this.onLike}
+                  style={[
+                    styles.actionButton,
+                    { marginLeft: 10, marginRight: 20 },
+                  ]}
+                >
+                  <Icon
+                    name={this.state.liked === true ? "heart" : "heart-outlined"}
+                    color={this.state.liked === true ? "red" : "#044244"}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <Image
+              source={photo}
+              style={styles.postImage}
+              resizeMode="cover"
+            />
+          )}
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  postContainer: {
+    flexDirection: "row",
+    width: "100%",
+    paddingTop: 20,
+    borderRadius: 30,
+    overflow: "hidden",
+  },
+  postContent: {
+    flex: 1,
+    backgroundColor: "#e8e8e8",
+    borderRadius: 30,
+    padding: 20,
+  },
+  postImage: {
+    width: "100%",
+    height: 220,
+  },
+  postText: {
+    fontSize: 16,
+    color: "#044244",
+  },
+  actionButton: {
+    marginTop: 10,
+    borderRadius: 5,
+    padding: 5,
+    backgroundColor: "#e8e8e8",
+  },
+});
